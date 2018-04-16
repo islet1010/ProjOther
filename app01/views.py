@@ -73,9 +73,6 @@ def show_page(request, page_no):
     :return:
     """
     # 查询所有的省份 中国的id为1
-    # 方式1
-    # area = Area.objects.get(id=1)  # 中国区域对象
-    # provinces = Area.objects.filter(parent=area)
     # 方式2
     provinces = Area.objects.filter(parent_id=1)
     # 创建Paginator对象
@@ -84,7 +81,6 @@ def show_page(request, page_no):
     paginator = Paginator(provinces, 10)
     # 获取第一页数据
     page = paginator.page(page_no)
-
     # 定义字典
     context = {'page': page}
     # 响应请求，返回html界面
