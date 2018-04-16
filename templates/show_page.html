@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页显示</title>
+</head>
+<body>
+
+
+<h3>测试Paginator/Page对象</h3>
+paginator对象：　<br/>
+<ul>
+    <li>总条数：{{ page.paginator.count }}　</li>
+    <li>总页数：{{ page.paginator.num_pages }}<br/>
+    <li>页码列表：{{ page.paginator.page_range }}<br/><br/>
+</ul>
+
+page对象：<br/>
+<ul>
+    <li>当前第几页：{{ page.number }}</li>
+    <li>是否有上一页：{{ page.has_previous }}</li>
+    <li>上一页页码：
+    {% if page.has_previous %}
+        {{ page.previous_page_number }}
+    {% endif %} </li>
+    <li>是否有下一页：{{ page.has_next }}</li>
+    <li>下一页页码：
+    {% if page.has_next %}
+        {{ page.next_page_number }}
+    {% endif %} </li>
+</ul>
+
+
+<h3>分页显示</h3>
+
+<ul>
+    {% for p in page %}
+        <li>{{ p.title }}</li>
+    {% endfor %}
+</ul>
+
+{% if page.has_previous %}
+    <a href="/show_page/{{ page.previous_page_number }}">上一页</a>
+{% endif %}
+
+{% for index in page.paginator.page_range %}
+    {# 判断是否是当前页 #}
+    {% if index == page.number %}
+        {{ index }}
+    {% else %}
+        <a href="/show_page/{{ index }}">{{ index }}</a>
+    {% endif %}
+
+{% endfor %}
+
+{% if page.has_next %}
+    <a href="/show_page/{{ page.next_page_number }}">下一页</a>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load staticfiles %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>区域选择案例</title>
+    <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script>
+        $(function () {
+
+            // todo: 监听省份改变，获取城市，并刷新界面显示
+            $('#id_prov').change(function () {
+                // 获取用户选择中省份id
+                var area_id = $(this).val();
+                // alert(area_id)
+                // 清空上一次显示的城市数据
+                $('#id_city').empty().append('<option>--请选择城市--</option>');
+                // 清空上一次显示的区县数据
+                $('#id_dist').empty().append('<option>--请选择区县--</option>');
+
+                // 发起ajax get异步请求，获取城市数据，并刷新
+                $.get('/get_children/' + area_id, function (data) {
+                    // data: 服务器返回的城市数据 js对象
+                    // { "areas": [[ 232, "广州市" ], [ 233,"韶关市" ]] }
+                    // alert(data.areas.length)
+                    $.each(data.areas, function (index, item) {
+                        // index: 第几次循环
+                        // item：数组的一个元素
+                        var id = item[0];
+                        var title = item[1];
+                        // console.log(index, id, title)
+                        $('#id_city')
+                            .append('<option value="'+ id +'">'+ title +'</option>')
+                    })
+                })
+            })
+
+            // todo: 监听城市改变，获取区县，并刷新界面显示
+            $('#id_city').change(function () {
+                // 获取用户选择中城市id
+                var area_id = $(this).val();
+                // alert(area_id)
+                // 清空上一次显示的区县数据
+                $('#id_dist').empty().append('<option>--请选择区县--</option>');
+
+                // 发起ajax get异步请求，获取区县数据，并刷新
+                $.get('/get_children/' + area_id, function (data) {
+                    // data: 服务器返回的区县数据 js对象
+                    $.each(data.areas, function (index, item) {
+                        // index: 第几次循环
+                        // item：数组的一个元素
+                        var id = item[0];
+                        var title = item[1];
+                        $('#id_dist')
+                            .append('<option value="'+ id +'">'+ title +'</option>')
+                    })
+                })
+            })
+        })
+
+    </script>
+
+</head>
+<body>
+
+<select id="id_prov">
+    <option>--请选择省份--</option>
+    {% for p in provinces %}
+         <option value="{{ p.id }}">{{ p.title }}</option>
+    {% endfor %}
+</select>
+
+
+<select id="id_city">
+    <option>--请选择城市--</option>
+</select>
+<select id="id_dist">
+    <option>--请选择区县--</option>
+</select>
+
+</body>
+</html>

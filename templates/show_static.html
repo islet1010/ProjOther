@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{# 加载静态文件 #}
+{% load staticfiles %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>显示静态图片</title>
+</head>
+<body>
+
+<h3>显示静态图片</h3>
+
+硬编码(static_url)： <br/>
+<img src="/static/image/avatar01.png">
+
+
+ <br/>
+ <br/>
+使用static标签： <br/>
+<img src="{% static 'image/avatar01.png' %}">
+
+
+</body>
+</html>

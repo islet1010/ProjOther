@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load staticfiles %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>显示用户头像</title>
+</head>
+<body>
+
+<h3>显示用户头像</h3>
+
+{% for user in users %}
+    {#<img src="/static/media/{{ user.avatar }}"> <br/>#}
+    <img src="{% static 'media/' %}{{ user.avatar }}"> <br/>
+
+{% endfor %}
+
+
+</body>
+</html>
